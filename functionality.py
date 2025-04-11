@@ -26,4 +26,4 @@ def convert_video_to_audio(video_file, output_ext="wav"):
     if platform == "win32":
         subprocess.run(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"], shell=True)
     else:
-        subprocess.Popen(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"])
+        subprocess.run(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"])
