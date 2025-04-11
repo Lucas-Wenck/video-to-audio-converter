@@ -1,8 +1,8 @@
-from screen import mainScreen
+import screen
 from sys import platform
 
 def main():
-    app = mainScreen()
+    app = screen.MainScreen()
     app.mainloop()
 
 if __name__ == "__main__":
