@@ -2,6 +2,8 @@ import os
 from tkinter import filedialog
 import subprocess
 from sys import platform
+from PIL import Image
+import PIL
 
 def browse_file(choice: str):
 
@@ -9,6 +11,8 @@ def browse_file(choice: str):
         filetypes = (("Video files", "*.mp4 *.avi *.mov *.mkv *.flv *.wmv"), ("All files", "*.*"))
     elif choice == "Audio to Audio":
         filetypes = (("Audio files", "*.mp3 *.aac *.wav *.flac"), ("All files", "*.*"))
+    elif choice == "Img to Img":
+        filetypes = (("Image files", "*.jpeg *.jpg *.png *.webp"), ("All files", "*.*"))
 
     file_path = filedialog.askopenfilename(
         title="Select video file",
@@ -26,4 +30,13 @@ def convert_video_to_audio(video_file, output_ext="wav"):
     if platform == "win32":
         subprocess.run(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"], shell=True)
     else:
-        subprocess.run(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"])
+        subprocess.Popen(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"])
+
+def convert_image(file_path, output):
+    filename, ext = os.path.splitext(file_path)
+    image = Image.open(file_path)
+    if output == "jpeg" or output == "jpg":
+        rgb_image = image.convert("RGB")
+        rgb_image.save(f"{filename}.{output}")
+    else:
+        image = image.save(f"{filename}.{output}")

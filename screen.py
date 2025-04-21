@@ -31,6 +31,10 @@ class VideoAudioScreen(customtkinter.CTk):
             self.option_info.configure(text="Choose the video format")
             self.optionMenu = customtkinter.CTkOptionMenu(self, values=["mp4", "mkv", "wmv", "gif"], command=self.format_choice)
 
+        elif self.conversion_choice == "Img to Img":
+            self.option_info.configure(text="Choose the image format")
+            self.optionMenu = customtkinter.CTkOptionMenu(self, values=["jpeg", "jpg", "png", "webp"], command=self.format_choice)
+
         self.optionMenu.grid(row=2, column = 2)
 
         self.button_2 = customtkinter.CTkButton(self, text="Choose the file", command=self.browse_file)
@@ -46,7 +50,10 @@ class VideoAudioScreen(customtkinter.CTk):
         thread.start()
 
     def convert(self):
-        functionality.convert_video_to_audio(self.selected_file, self.audio_format)
+        if self.conversion_choice == "Img to Img":
+            functionality.convert_image(self.selected_file, self.audio_format)
+        else:
+            functionality.convert_video_to_audio(self.selected_file, self.audio_format)
         self.status.configure(text="The converted file should be in the same directory of the choosen file")
         self.button_1.configure(state="normal")
         self.button_2.configure(state="normal")
@@ -72,22 +79,15 @@ class MainScreen(customtkinter.CTk):
         self.grid_columnconfigure((0), weight=1)
         self.grid_rowconfigure((0, 1), weight=1)
 
-        self.conversion_option = customtkinter.CTkOptionMenu(self, values=["Video to Audio", "Video to Video", "Audio to Audio"], command=self.choice)
+        self.conversion_option = customtkinter.CTkOptionMenu(self, values=["Video to Audio", "Video to Video", "Audio to Audio", "Img to Img"], command=self.choice)
         self.conversion_option.grid(row=0, column=0)
 
         self.conversion_option_button = customtkinter.CTkButton(self, text="Video to Audio", command=self.app_choice)
         self.conversion_option_button.grid(row=1, column=0)
 
     def app_choice(self):
-        if self.conversion_choice == "Video to Audio":
-            videoToAudio = VideoAudioScreen(self.conversion_choice)
-            videoToAudio.mainloop()
-        elif self.conversion_choice == "Audio to Audio":
-            videoToAudio = VideoAudioScreen(self.conversion_choice)
-            videoToAudio.mainloop()
-        elif self.conversion_choice == "Video to Video":
-            videoToAudio = VideoAudioScreen(self.conversion_choice)
-            videoToAudio.mainloop()
+        videoToAudio = VideoAudioScreen(self.conversion_choice)
+        videoToAudio.mainloop()
 
     def choice(self, choice):
         self.conversion_choice = choice
